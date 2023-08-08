@@ -28,7 +28,7 @@ random.addEventListener('click', () => {
 
 let getPelicula = () => {
     let pelicula = nombreDePelicula.value;
-    let url = `http://www.omdbapi.com/?t=${pelicula}&apikey=${apiKey}`;
+    let url = `https://www.omdbapi.com/?t=${pelicula}&apikey=${apiKey}`;
 
     if (pelicula.length <= 0) {
         resultadoBuscar.innerHTML = `<h3 class="mensaje">Ingrese el Titulo de la película en ingles...</h3>`;
