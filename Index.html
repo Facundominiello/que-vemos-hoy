@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&amp;display=swap" rel="stylesheet">
+    <title>Radon Movie</title>
+</head>
+<body>
+    <main>
+        <h1>¿QUE VEMOS HOY?</h1>
+        <div class="contenedor">
+            <div class="botones">
+                <button class="buscador">Buscador</button>
+                <button class="random">Radom</button>
+            </div>
+            <div class="contenedor-buscador">
+                <div class="buscar">
+                    <input type="text" id="nombre-de-pelicula" placeholder="Titulo de película en ingles...">
+                    <button class="buscar-buscador">Buscar</button>
+                </div>
+                <div id="resultado-buscar"></div>
+            </div>
+            <div class="contenedor-random"> 
+                <!--<div class="contenido">
+                    <label for="filtro-contenido">Tipo:</label>
+                    <select id="filtro-contenido" class="filtro-contenido">
+                        <option value="pelicula">movie</option>
+                        <option value="serie">serie</option>
+                    </select>
+                </div> -->
+                <div class="genero">
+                    <label for="filtro-genero">Género:</label>
+                    <select id="filtro-genero" class="filtro-genero">
+                        <option value="horror">Horror</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="romance">Romance</option>
+                        <option value="action">Action</option>
+                        <option value="Science fiction">Science fiction</option>
+                    </select>
+                </div>  
+                <div class="fecha">
+                    <label for="filtro-anio">Selecciona un año:</label>
+                    <input type="number" id="filtro-anio" name="filtro-anio" min="1970" max="2023">
+                </div>
+                <button class="buscar-random">Buscar</button>
+            </div> 
+            <div id="resultado-random"></div>
+        </div>
+    </main>
+    <script src="JS/Index.js"></script> 
+</body>
+</html>
