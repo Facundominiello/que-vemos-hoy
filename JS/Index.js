@@ -1,4 +1,4 @@
-let apiKey = 'ca28289a';
+let apiKey = '272527bf';
 //RANDOM(VARIABLES)//
 let buscarRandom = document.querySelector('.buscar-random');
 let filtroGenero = document.querySelector('.filtro-genero');
@@ -39,27 +39,27 @@ let getPelicula = () => {
             if (data.Response == "True") {
                 resultadoBuscar.innerHTML = `
                     <div class="info">
-                        <img src=${data.Poster} class="poster">
-                        <div>
-                            <h2>${data.Title}</h2>
-                            <div class="calificacion">
-                                <img src="flama.svg">
-                                <h4>${data.imdbRating}</h4>
-                            </div>
-                            <div class="datos">
-                                <span>${data.Rated}</span>
-                                <span>${data.Year}</span>
-                                <span>${data.Runtime}</span>
-                            </div>
-                            <div class="genero">
-                                <div>${data.Genre.split(",").join("</div><div>")}</div>
-                            </div>
+                    <img src=${data.Poster} class="poster">
+                    <div>
+                        <h2>${data.Title}</h2>
+                        <div class="calificacion">
+                            <img src="flama.svg">
+                            <h4>${data.imdbRating}</h4>
+                        </div>
+                        <div class="datos">
+                            <span>${data.Rated}</span>
+                            <span>${data.Year}</span>
+                            <span>${data.Runtime}</span>
+                        </div>
+                        <div class="genero">
+                            <div>${data.Genre.split(",").join("</div><div>")}</div>
                         </div>
                     </div>
-                    <h3>Sinopsis:</h3>
-                    <p>${data.Plot}</p>
-                    <h3>Elenco:</h3>
-                    <p>${data.Actors}</p>
+                </div>
+                <h3>Sinopsis:</h3>
+                <p>${data.Plot}</p>
+                <h3>Elenco:</h3>
+                <p>${data.Actors}</p>
                 `;
             } else {
                 resultadoBuscar.innerHTML = `<h3 class="mensaje">No encontramos la película, recuerda que debe ser en ingles el titulo</h3>`;
@@ -75,54 +75,53 @@ buscarBuscador.addEventListener("click", getPelicula);
 
 
 //RANDOM(EN PROCESO)//
-buscarRandom.addEventListener('click', () => {
-  let anio = filtroAnio.value;
-  let genero = filtroGenero.value;
-  //let contenido = filtroContenido.value;
-  let url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&y=${anio}&type=movie`;
+buscarRandom.addEventListener('click', async () => {
+  try {
+    const anio = filtroAnio.value;
+    const genero = filtroGenero.value;
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&y=${anio}&type=movie&_=${Math.random()}`;
 
-  fetch(url)
-    .then(Response => Response.json())
-    .then(data => {
-      let peliculasSeries = data.Search;
+    const response = await fetch(url);
+    const data = await response.json();
 
-      if (peliculasSeries) {
-        let radomContenido = selectRandomContenido(peliculasSeries);
-        resultadoRadom.innerHTML = `
+    const peliculasSeries = data.Search;
+
+    if (peliculasSeries) {
+      const randomContenido = selectRandomContenido(peliculasSeries);
+      resultadoRadom.innerHTML = `
         <div class="info">
-            <img src=${radomContenido.Poster} class="poster">
-            <div>
-                <h2>${radomContenido.Title}</h2>
-                <div class="calificacion">
-                    <img src="flama.svg">
-                    <h4>${radomContenido.imdbRating}</h4>
-                </div>
-                <div class="datos">
-                    <span>${radomContenido.Rated}</span>
-                    <span>${radomContenido.Year}</span>
-                    <span>${radomContenido.Runtime}</span>
-                </div>
-                <div class="genero">
-                    <div>${radomContenido.Genre.split(",").join("</div><div>")}</div>
-                </div>
-            </div>
+          <img src=${randomContenido.Poster} class="poster">
+          <div>
+              <h2>${randomContenido.Title}</h2>
+              <div class="calificacion">
+                  <img src="flama.svg">
+                  <h4>${randomContenido.imdbRating}</h4>
+              </div>
+              <div class="datos">
+                  <span>${randomContenido.Rated}</span>
+                  <span>${randomContenido.Year}</span>
+                  <span>${randomContenido.Runtime}</span>
+              </div>
+              <div class="genero">
+                  <div>${randomContenido.Genre ? randomContenido.Genre.split(",").join("</div><div>") : ''}</div>
+              </div>
+          </div>
         </div>
         <h3>Sinopsis:</h3>
-        <p>${radomContenido.Plot}</p>
+        <p>${randomContenido.Plot}</p>
         <h3>Elenco:</h3>
-        <p>${radomContenido.Actors}</p>
-    `;
-      } else {
-        resultadoRadom.innerHTML = `<h3 class="mensaje">No encontramos nada con estos filtros</h3>`;
-      }
-    })
-    .catch(error => {
-      return'Hubo un problema', error;
-    });
+        <p>${randomContenido.Actors}</p>
+      `;
+    } else {
+      resultadoRadom.innerHTML = `<h3 class="mensaje">No encontramos nada con estos filtros</h3>`;
+    }
+  } catch (error) {
+    console.error('Hubo un problema:', error);
+  }
 });
 
 function selectRandomContenido(peliculasSeries) {
-  let randomIndex = Math.floor(Math.random() * peliculasSeries.length);
+  const randomIndex = Math.floor(Math.random() * peliculasSeries.length);
   return peliculasSeries[randomIndex];
 }
 
