@@ -101,6 +101,23 @@ h1{
 .contenedor-random {
     display: none;
   }
+.randomizador{
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  align-items: center;
+}
+.buscar-random{
+  width: 25%;
+  height: 3.5rem;
+  background-color: #dacd5a;
+  border-radius: 5px;
+  color: black;
+  transition: background-color 1s ease;
+}
+.buscar-random:hover{
+  background-color: #fff7a3;
+}
 .info{
     position: relative;
     display: grid;
@@ -176,5 +193,26 @@ p{
 .mensaje{
     text-align: center;
     background-color: #2a2b2c;
+}
+
+@media (max-width: 660px){
+  .buscador{
+    padding: 0;
+  }
+  h1{
+    font-size: 4.5rem;
+    text-align: center;
+  }
+  .info{
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 15px;
+  }
+  .poster{
+    width: 50%;
+  }
+  .genero{
+    gap:15px;
+  }
 }
   
