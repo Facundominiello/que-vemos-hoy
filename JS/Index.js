@@ -2,10 +2,8 @@ let apiKey = '272527bf';
 //RANDOM(VARIABLES)//
 let buscarRandom = document.querySelector('.buscar-random');
 let filtroGenero = document.querySelector('.filtro-genero');
-let filtroAnio = document.querySelector('#filtro-anio');
 let resultadoRadom = document.getElementById('resultado-random')
 let random = document.querySelector('.random');
-//let filtroContenido = document.querySelector('.filtro-contenido');
 let contenedorRandom = document.querySelector('.contenedor-random');
 //BUSCADOR(VARIABLES)//
 let buscador = document.querySelector('.buscador');
@@ -77,9 +75,8 @@ buscarBuscador.addEventListener("click", getPelicula);
 //RANDOM(EN PROCESO)//
 buscarRandom.addEventListener('click', async () => {
   try {
-    const anio = filtroAnio.value;
     const genero = filtroGenero.value;
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&y=${anio}&type=movie&_=${Math.random()}`;
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&type=movie&_=${Math.random()}`;
 
     const response = await fetch(url);
     const data = await response.json();
