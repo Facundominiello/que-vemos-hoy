@@ -24,6 +24,24 @@ random.addEventListener('click', () => {
     contenedorRandom.style.display = 'block';
   });
 
+buscador.addEventListener('click', () => {
+  contenedorBuscador.style.display = 'block'; 
+  contenedorRandom.style.display = 'none';
+  limpiarResultados();
+});
+
+random.addEventListener('click', () => {
+  contenedorBuscador.style.display = 'none';
+  contenedorRandom.style.display = 'block';
+  limpiarResultados(); 
+});
+
+function limpiarResultados() {
+  resultadoBuscar.innerHTML = ''; 
+  resultadoRadom.innerHTML = ''; 
+}
+
+
 let getPelicula = () => {
     let pelicula = nombreDePelicula.value;
     let url = `https://www.omdbapi.com/?t=${pelicula}&apikey=${apiKey}`;
@@ -76,10 +94,16 @@ buscarBuscador.addEventListener("click", getPelicula);
 buscarRandom.addEventListener('click', async () => {
   try {
     const genero = filtroGenero.value;
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&type=movie&_=${Math.random()}`;
+    console.log("Valor de genero:", genero); // Agrega esta línea para depurar
+    const timestamp = new Date().getTime(); 
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&type=movie&_=${timestamp}`;
+
+    console.log('URL de la API:', url); // Agregar esta línea para mostrar la URL en la consola
 
     const response = await fetch(url);
     const data = await response.json();
+
+    console.log('Respuesta de la API:', data); // Agregar esta línea para mostrar la respuesta en la consola
 
     const peliculasSeries = data.Search;
 
