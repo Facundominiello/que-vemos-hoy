@@ -41,6 +41,57 @@ function limpiarResultados() {
   resultadoRadom.innerHTML = ''; 
 }
 
+let timer;
+
+nombreDePelicula.addEventListener('input', () => {
+  clearTimeout(timer);
+
+  timer = setTimeout(() => {
+    getPeliculaAutoComplete();
+  }, 500);
+});
+
+async function getPeliculaAutoComplete() {
+  let pelicula = nombreDePelicula.value;
+  let url = `https://www.omdbapi.com/?s=${pelicula}&apikey=${apiKey}`;
+
+  if (pelicula.length <= 0) {
+    resultadoBuscar.innerHTML = `<h3 class="mensaje">Ingrese el Título de la película en inglés...</h3>`;
+  } else {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.Response == "True") {
+        const sugerenciasLimitadas = data.Search.slice(0, 3);
+        const sugerencias = sugerenciasLimitadas.map(item => {
+          return `
+            <li class="itemSugerencia">
+              <img class="posterSugerencia" src="${item.Poster}" alt="${item.Title}" /> ${item.Title}
+            </li>
+          `;
+        }).join('');
+
+        resultadoBuscar.innerHTML = `
+          <ul class="sugerencia">${sugerencias}</ul>
+        `;
+
+        const sugerenciaItems = resultadoBuscar.querySelectorAll('li');
+        sugerenciaItems.forEach(item => {
+          item.addEventListener('click', () => {
+            nombreDePelicula.value = item.textContent;
+            resultadoBuscar.innerHTML = '';
+            getPelicula();
+          });
+        });
+      } 
+    } catch (error) {
+      resultadoBuscar.innerHTML = `<h3 class="mensaje">Error</h3>`;
+    }
+  }
+}
+
+// ... (Resto del código)
 
 let getPelicula = () => {
     let pelicula = nombreDePelicula.value;
@@ -94,17 +145,16 @@ buscarBuscador.addEventListener("click", getPelicula);
 buscarRandom.addEventListener('click', async () => {
   try {
     const genero = filtroGenero.value;
-    console.log("Valor de genero:", genero); // Agrega esta línea para depurar
-    const timestamp = new Date().getTime(); 
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${genero}&type=movie&_=${timestamp}`;
+    const numeroRandom = Math.floor(Math.random() * 9999999) + 1;
+    const url = `https://www.omdbapi.com/?i=tt${numeroRandom}&apikey=${apiKey}`;
 
-    console.log('URL de la API:', url); // Agregar esta línea para mostrar la URL en la consola
+
+    console.log('URL de la API:', url); 
 
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('Respuesta de la API:', data); // Agregar esta línea para mostrar la respuesta en la consola
-
+    console.log('Respuesta de la API:', data); 
     const peliculasSeries = data.Search;
 
     if (peliculasSeries) {
@@ -145,4 +195,5 @@ function selectRandomContenido(peliculasSeries) {
   const randomIndex = Math.floor(Math.random() * peliculasSeries.length);
   return peliculasSeries[randomIndex];
 }
+
 

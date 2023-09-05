@@ -67,6 +67,23 @@ h1{
   border-right: 2px solid #dacd5a;
   transition: color 1s ease;
 }
+.sugerencia{
+  list-style-type: none;
+}
+
+.itemSugerencia{
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  cursor: pointer;
+}
+.itemSugerencia:hover{
+  background-color: #333333;
+}
+.posterSugerencia{
+  height: 10rem;
+}
 .random{
   transition: color 1s ease;
 }
