@@ -1,7 +1,6 @@
 let apiKey = '272527bf';
 //RANDOM(VARIABLES)//
 let buscarRandom = document.querySelector('.buscar-random');
-let filtroGenero = document.querySelector('.filtro-genero');
 let resultadoRadom = document.getElementById('resultado-random')
 let random = document.querySelector('.random');
 let contenedorRandom = document.querySelector('.contenedor-random');
@@ -91,8 +90,6 @@ async function getPeliculaAutoComplete() {
   }
 }
 
-// ... (Resto del código)
-
 let getPelicula = () => {
     let pelicula = nombreDePelicula.value;
     let url = `https://www.omdbapi.com/?t=${pelicula}&apikey=${apiKey}`;
@@ -144,56 +141,47 @@ buscarBuscador.addEventListener("click", getPelicula);
 //RANDOM(EN PROCESO)//
 buscarRandom.addEventListener('click', async () => {
   try {
-    const genero = filtroGenero.value;
-    const numeroRandom = Math.floor(Math.random() * 9999999) + 1;
-    const url = `https://www.omdbapi.com/?i=tt${numeroRandom}&apikey=${apiKey}`;
+    let numeroRandom;
+    let data;
 
+    do {
+      numeroRandom = Math.floor(Math.random() * 9999999) + 1;
+      const url = `https://www.omdbapi.com/?i=tt${numeroRandom}&apikey=${apiKey}`;
+      const response = await fetch(url);
+      data = await response.json();
+    } while (data.Response !== "True" || data.imdbRating === "N/A" || data.Poster === "N/A" || data.Rated === "N/A");
 
-    console.log('URL de la API:', url); 
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    console.log('Respuesta de la API:', data); 
-    const peliculasSeries = data.Search;
-
-    if (peliculasSeries) {
-      const randomContenido = selectRandomContenido(peliculasSeries);
-      resultadoRadom.innerHTML = `
-        <div class="info">
-          <img src=${randomContenido.Poster} class="poster">
-          <div>
-              <h2>${randomContenido.Title}</h2>
-              <div class="calificacion">
-                  <img src="flama.svg">
-                  <h4>${randomContenido.imdbRating}</h4>
-              </div>
-              <div class="datos">
-                  <span>${randomContenido.Rated}</span>
-                  <span>${randomContenido.Year}</span>
-                  <span>${randomContenido.Runtime}</span>
-              </div>
-              <div class="genero">
-                  <div>${randomContenido.Genre ? randomContenido.Genre.split(",").join("</div><div>") : ''}</div>
-              </div>
+    resultadoRadom.innerHTML = `
+      <div class="info">
+        <img src=${data.Poster} class="poster">
+        <div>
+          <h2>${data.Title}</h2>
+          <div class="calificacion">
+            <img src="flama.svg">
+            <h4>${data.imdbRating}</h4>
+          </div>
+          <div class="datos">
+            <span>${data.Rated}</span>
+            <span>${data.Year}</span>
+            <span>${data.Runtime}</span>
+          </div>
+          <div class="genero">
+            <div>${data.Genre ? data.Genre.split(",").join("</div><div>") : ''}</div>
           </div>
         </div>
-        <h3>Sinopsis:</h3>
-        <p>${randomContenido.Plot}</p>
-        <h3>Elenco:</h3>
-        <p>${randomContenido.Actors}</p>
-      `;
-    } else {
-      resultadoRadom.innerHTML = `<h3 class="mensaje">No encontramos nada con estos filtros</h3>`;
-    }
+      </div>
+      <h3>Sinopsis:</h3>
+      <p>${data.Plot}</p>
+      <h3>Elenco:</h3>
+      <p>${data.Actors}</p>
+    `;
+
+    console.log('Resultados de la búsqueda aleatoria:', data);
   } catch (error) {
     console.error('Hubo un problema:', error);
   }
 });
 
-function selectRandomContenido(peliculasSeries) {
-  const randomIndex = Math.floor(Math.random() * peliculasSeries.length);
-  return peliculasSeries[randomIndex];
-}
+
 
 
