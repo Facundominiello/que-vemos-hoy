@@ -284,8 +284,9 @@ p{
 }
 
 @media (max-width: 660px){
-  .contenedorgit {
-    height: auto;
+  .contenedor {
+    height: 100%;
+    overflow: auto;
   }
   .buscador{
     padding: 0;
