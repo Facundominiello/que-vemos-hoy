@@ -284,6 +284,9 @@ p{
 }
 
 @media (max-width: 660px){
+  .contenedor{
+    height: auto;
+  }
   .buscador{
     padding: 0;
   }
