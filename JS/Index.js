@@ -1,16 +1,18 @@
 let apiKey = '272527bf';
+let titulo = document.querySelector('titulo')
 //RANDOM(VARIABLES)//
 let buscarRandom = document.querySelector('.buscar-random');
 let resultadoRadom = document.getElementById('resultado-random')
 let random = document.querySelector('.random');
 let contenedorRandom = document.querySelector('.contenedor-random');
+let buscando = document.getElementById('buscando')
 //BUSCADOR(VARIABLES)//
 let buscador = document.querySelector('.buscador');
 let contenedorBuscador = document.querySelector('.contenedor-buscador');
 let buscarBuscador = document.querySelector('.buscar-buscador');
 let nombreDePelicula = document.getElementById('nombre-de-pelicula')
 let resultadoBuscar = document.getElementById('resultado-buscar')
-
+const spinner = document.querySelector('.sk-chase')
 
 //BUSCADOR//
 buscador.addEventListener('click', () => {
@@ -141,6 +143,10 @@ buscarBuscador.addEventListener("click", getPelicula);
 //RANDOM(EN PROCESO)//
 buscarRandom.addEventListener('click', async () => {
   try {
+    spinner.style.display = 'inline-block';
+    buscarRandom.style.backgroundColor = '#dacd5a';
+    buscarRandom.style.cursor = 'auto';
+    buscando.style.display = 'none';
     let numeroRandom;
     let data;
 
@@ -175,6 +181,11 @@ buscarRandom.addEventListener('click', async () => {
       <h3>Elenco:</h3>
       <p>${data.Actors}</p>
     `;
+    spinner.style.display = 'none';
+    buscarRandom.style.display = 'inline-block';
+    buscarRandom.style.cursor = 'pointer';
+    buscarRandom.style.removeProperty('background-color');
+    buscando.style.display = 'inline-block';
 
     console.log('Resultados de la búsqueda aleatoria:', data);
   } catch (error) {
