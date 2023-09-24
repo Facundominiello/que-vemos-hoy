@@ -57,8 +57,11 @@ async function getPeliculaAutoComplete() {
   let url = `https://www.omdbapi.com/?s=${pelicula}&apikey=${apiKey}`;
 
   if (pelicula.length <= 0) {
-    resultadoBuscar.innerHTML = `<h3 class="mensaje">Ingrese el Título de la película en inglés...</h3>`;
-  } else {
+    iziToast.warning({
+      title: 'Precaución',
+      message: 'Ingrese el Titulo de la película en ingles...',
+      position: 'topRight'
+    })  } else {
     try {
       const response = await fetch(url);
       const data = await response.json();
@@ -87,7 +90,11 @@ async function getPeliculaAutoComplete() {
         });
       } 
     } catch (error) {
-      resultadoBuscar.innerHTML = `<h3 class="mensaje">Error</h3>`;
+      iziToast.error({
+        title: 'Error',
+        message: 'Hubo un error.',
+        position: 'topRight'
+      });
     }
   }
 }
@@ -97,7 +104,11 @@ let getPelicula = () => {
     let url = `https://www.omdbapi.com/?t=${pelicula}&apikey=${apiKey}`;
 
     if (pelicula.length <= 0) {
-        resultadoBuscar.innerHTML = `<h3 class="mensaje">Ingrese el Titulo de la película en ingles...</h3>`;
+        iziToast.warning({
+          title: 'Precaución',
+          message: 'Ingrese el Titulo de la película en ingles...',
+          position: 'topRight'
+        })
     } else {
         fetch(url)
           .then(resp => resp.json())
@@ -127,13 +138,29 @@ let getPelicula = () => {
                 <h3>Elenco:</h3>
                 <p>${data.Actors}</p>
                 `;
+                iziToast.success({
+                  title: 'Éxito',
+                  message: 'Disfruta tu película',
+                  position: 'topRight',
+                });
+                if (window.innerWidth <= 768) { 
+                  contenedorMobile.style.height = '100%';
+                }
             } else {
-                resultadoBuscar.innerHTML = `<h3 class="mensaje">No encontramos la película, recuerda que debe ser en ingles el titulo</h3>`;
-            }
-          })
-            .catch(() => {
-                resultadoBuscar.innerHTML = `<h3 class="mensaje">Error</h3>`;
+              iziToast.error({
+                title: 'Error',
+                message: 'No se encontró la película. Recuerda que debe ser en inglés el título.',
+                position: 'topRight'
             });
+        }
+      })
+        .catch(() => {
+            iziToast.error({
+                title: 'Error',
+                message: 'Hubo un error.',
+                position: 'topRight'
+            });
+        });
     }
 };
 
@@ -150,12 +177,19 @@ buscarRandom.addEventListener('click', async () => {
     let numeroRandom;
     let data;
 
+    if (spinner.style.display = 'inline-block') {
+      iziToast.warning({
+        title: 'Precaución',
+        message: 'Este proceso puede demorar',
+        position: 'topRight'
+      })
+    }
     do {
       numeroRandom = Math.floor(Math.random() * 9999999) + 1;
       const url = `https://www.omdbapi.com/?i=tt${numeroRandom}&apikey=${apiKey}`;
       const response = await fetch(url);
       data = await response.json();
-    } while (data.Response !== "True" || data.imdbRating === "N/A" || data.Poster === "N/A" || data.Rated === "N/A");
+    } while (data.Response !== "True" || data.imdbRating === "N/A" || data.Poster === "N/A" && (data.Type === "movie" || data.Type === "series"));
 
     resultadoRadom.innerHTML = `
       <div class="info">
@@ -181,18 +215,18 @@ buscarRandom.addEventListener('click', async () => {
       <h3>Elenco:</h3>
       <p>${data.Actors}</p>
     `;
+
     spinner.style.display = 'none';
     buscarRandom.style.display = 'inline-block';
     buscarRandom.style.cursor = 'pointer';
     buscarRandom.style.removeProperty('background-color');
     buscando.style.display = 'inline-block';
-
-    console.log('Resultados de la búsqueda aleatoria:', data);
+    
   } catch (error) {
-    console.error('Hubo un problema:', error);
+      iziToast.error({
+        title: 'Error',
+        message: 'Hubo un error.',
+        position: 'topRight'
+      });
   }
 });
-
-
-
-
